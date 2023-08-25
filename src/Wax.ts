@@ -56,10 +56,10 @@ export class Wax extends Authenticator {
     try {
       if (this.wax) {
         if (await this.wax.isAutoLoginAvailable()) {
-          this.receiveLogin()
+          await this.receiveLogin()
         } else {
           if (HAS_VALID_SESSION) {
-            this.receiveLogin(data.userAccount, data.pubKeys, data?.isTemp || false)
+            await this.receiveLogin(data.userAccount, data.pubKeys, data?.isTemp || false)
           }
         }
       }
@@ -185,7 +185,7 @@ export class Wax extends Authenticator {
     try {
       if (!this.session) {
         await this.wax.login()
-        this.receiveLogin()
+        await this.receiveLogin()
       }
 
       if (!this.session) {
