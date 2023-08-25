@@ -240,10 +240,17 @@ export class Wax extends Authenticator {
     return 'wax'
   }
 
-  private receiveLogin(userAccount?: string, pubKeys?: string[], isTemp?: boolean) {
+  private async receiveLogin(userAccount?: string, pubKeys?: string[], isTemp?: boolean) {
     if (!this.wax) {
       return
     }
+    
+    if((userAccount || this.wax.userAccount) && this.wax.isTemp === undefined) {		
+      const account = await this.wax.api.rpc.get_account(userAccount || this.wax.userAccount).catch((err) => null)		
+      if(!account){
+        isTemp = true;
+      }		
+    }    
 
     const login = {
       // @ts-ignore
